@@ -1,0 +1,21 @@
+name: Task1
+
+on:
+  pull_request:
+    paths: ["task1/**"]
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    name: Run tests on Ubuntu with GCC
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and check
+        run: cd task1 && CC=gcc make
+  macos:
+    runs-on: macos-latest
+    name: Run tests on MacOS (Apple Silicon) with Clang
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and check
+        run: cd task1 && CC=clang make
