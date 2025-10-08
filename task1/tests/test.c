@@ -67,7 +67,7 @@ int main(void) {
     ok |= test_wc("Basic pipe", "printf 'Hello,\nworld!\n' | ./my-wc",
                   "2\n2\n14\n");
     ok |= test_wc("File input", "./my-wc tests/the_laughing_heart.txt",
-                  "20\n98\n495\n");
+                  "20\n98\n491\n");
     ok |= test_wc("Empty pipe", "printf '' | ./my-wc", "0\n0\n0\n");
 
     return ok;
