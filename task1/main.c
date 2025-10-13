@@ -1,50 +1,56 @@
-﻿#include <stdio.h>
+﻿#include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
 
 int main(int argc, char **argv)
 {
-  FILE *Fin = (argc > 1) ? fopen(argv[1], "r") : stdin;
-  if (Fin == NULL) return -1;
+    int result = 1;
 
-  int line_counter = 0;
-  int word_counter = 0;
-  int char_counter = 0;
-
-  int result = 0;
-  bool in_word = false;
-  int ch;
-  do {
-    ch = fgetc(Fin);
-
-    if (ch == EOF || ch == '\x04') break; // end of transmission
-
-    if (ch < 0) // unknown char
-    {
-      result = -2;
-      break;
+    FILE *fin = (argc > 1) ? fopen(argv[1], "r") : stdin;
+    if (!fin) {
+        perror("Can't open file");
+        return 2;
     }
 
-    ++char_counter;
+    int line_counter = 0;
+    int word_counter = 0;
+    int char_counter = 0;
 
-    if (ch == '\n') ++line_counter; // end line
-
-    if (isspace(ch) && in_word) // space char
+    bool in_word = false;
+    for (int ch = fgetc(fin) ; (ch != EOF) ; ch = fgetc(fin))
     {
-      ++word_counter;
-      in_word = false;
-      continue;
+        ++char_counter;
+
+        if (ch == '\n') // end line
+            ++line_counter;
+
+        if (isspace(ch) && in_word) // space char
+        {
+            ++word_counter;
+            in_word = false;
+            continue;
+        }
+
+        in_word = true;
     }
 
-    in_word = true;
-  }
-  while (1);
+    if (in_word)
+        ++word_counter;
 
-  if (in_word) ++word_counter;
+    if (ferror(fin))
+    {
+        perror("I/O error when reading");
+        return 3;
+    }
+    else if (feof(fin))
+    {
+        result = EXIT_SUCCESS;
+    }
 
-  if (Fin != NULL) fclose(Fin);
+    fclose(fin);
 
-  printf("%d\n%d\n%d\n", line_counter, word_counter, char_counter);
+    printf("%d\n%d\n%d\n", line_counter, word_counter, char_counter);
 
-  return result;
+    return result;
 }
