@@ -66,7 +66,7 @@ int main(int argc, char **argv)
     int line_count = 0;
     int word_count = 0;
     int char_count = 0;
-    int result;
+    int result = ERROR_UNKNOWN;
 
     FILE *fin = (argc > 1) ? fopen(argv[1], "r") : stdin;
     if (!fin) {
