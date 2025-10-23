@@ -90,10 +90,10 @@ int main(int argc, char **argv)
         perror("I/O error when reading");
         break;
     case ERROR_INTERNAL:
-        printf("Internal error: %s\n", InternalErrorMsg);
+        fprintf(stderr, "Internal error: %s\n", InternalErrorMsg);
         break;
     default:
-        printf("Unknown error\n");
+        fprintf(stderr, "Unknown error\n");
     }
 
     return result;
